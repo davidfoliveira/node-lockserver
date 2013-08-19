@@ -17,7 +17,7 @@ Running lockserver daemon:
 Simple use:
 
 	var
-	   LockServer = require('../lib/lockserver').Client,
+	   LockServer = require('lockserver').Client,
 	   lockserver = new LockServer({host: "127.0.0.1"});
 
 	lockserver.lock("stuff",function(unlock,err){
@@ -33,3 +33,29 @@ Simple use:
 	   unlock();
 	   process.exit(0);
 	});
+
+
+Other example:
+
+	var
+	   LockServer = require('lockserver').Client,
+	   lockserver = new LockServer({host: "127.0.0.1"});
+
+	lockserver.lock("stuff",function(unlock,err){
+	   if ( err ) return;
+	   console.log("I am running 1");
+	   setTimeout(function(){
+	      unlock();
+	   }, 5000);
+	});
+	lockserver.ifLock("stuff",
+	   function(){
+	      console.log("Is locked");
+	   },
+	   function(unlock,err){
+	      if ( err ) return;
+	      console.log("I am running 2");
+	      unlock();
+	      process.exit(0);
+	   }
+	);
