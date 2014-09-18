@@ -41,6 +41,27 @@ Other example:
 	   LockServer = require('lockserver').Client,
 	   lockserver = new LockServer({host: "127.0.0.1"});
 
+	lockserver.lock(["stuff1","stuff2"],function(unlock,err){
+	   if ( err ) return;
+	   console.log("I am running 1");
+	   setTimeout(function(){
+	      unlock();
+	   }, 5000);
+	});
+	lockserver.lock("stuff2",function(unlock,err){
+	   if ( err ) return;
+	   console.log("I am running 2");
+	   unlock();
+	   process.exit(0);
+	});
+
+
+Yet another example:
+
+	var
+	   LockServer = require('lockserver').Client,
+	   lockserver = new LockServer({host: "127.0.0.1"});
+
 	lockserver.lock("stuff",function(unlock,err){
 	   if ( err ) return;
 	   console.log("I am running 1");
